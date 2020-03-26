@@ -68,12 +68,12 @@ function get_bitrix_remote_scheme($path)
 	return json_decode($scheme, true);
 }
 
-function compile_bitrix_diff($array1, $array2)
+function compile_bitrix_diff($array1, $array2, $name1, $name2)
 {
 	$diff = bitrix_diff_arrays($array1, $array2);
 	
-	$result  = '<table>';
-	$result .= empty($diff) ? 'Same structure' : $diff;
+	$result  = '<table style="width:100%">';
+	$result .= empty($diff) ? 'Same structure' : bitrix_table_tr($name1, $name2) . $diff;
 	$result .= '</table>';
 	
 	return $result;
@@ -81,27 +81,32 @@ function compile_bitrix_diff($array1, $array2)
 
 function bitrix_table_tr($td1, $td2)
 {
-	return '<tr><td>' . $td1 . '</td><td>' . $td2 . '</td></tr>';
+	return '<tr><td style="border-bottom:1px solid #c2c2c2">' . $td1 . '</td><td style="border-bottom:1px solid #c2c2c2">' . $td2 . '</td></tr>';
 }
 
 function bitrix_diff_arrays($array1, $array2, $prefix = '')
 {
+	global $skip_keys;
+	
 	$result = '';
 	$only_arr2 = array_diff_key($array2, $array1);
 	
 	foreach ($only_arr2 as $k => $v)
 	{
-		$result .= bitrix_table_tr('not found', $prefix . '.' . $k);
+		$result .= bitrix_table_tr('<i>not found</i>', $prefix . '.' . $k);
 	}
 	
 	foreach ($array1 as $k => $v)
 	{
+		if (in_array($k, $skip_keys))
+			continue;
+		
 		if (is_null($v))
 			continue;
 		
 		if ( ! isset($array2[$k]))
 		{
-			$result .= bitrix_table_tr($prefix . $k, 'not found');
+			$result .= bitrix_table_tr($prefix . $k, '<i>not found</i>');
 			continue;
 		}
 		
@@ -112,7 +117,7 @@ function bitrix_diff_arrays($array1, $array2, $prefix = '')
 		}
 		elseif ($array1[$k] !== $array2[$k])
 		{
-			$result .= bitrix_table_tr($prefix . $k . print_r($array1[$k], true), $prefix . $k . print_r($array2[$k], true));
+			$result .= bitrix_table_tr($prefix . $k . ' = ' . print_r($array1[$k], true), $prefix . $k . ' = ' . print_r($array2[$k], true));
 		}
 		else
 		{
