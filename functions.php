@@ -8,10 +8,18 @@ function get_bitrix_scheme($bitrix_path)
 		return get_bitrix_local_scheme($bitrix_path);
 }
 
+function bitrix_admin_auth()
+{
+	global $USER;
+	$USER->Authorize(1);
+}
+
 function get_bitrix_local_scheme($path)
 {
 	include_once $path . '/bitrix/modules/main/include/prolog_before.php';
-
+	
+	bitrix_admin_auth();
+	
 	$iblock_list = CIBlock::GetList();
 	
 	$PROPS = get_bitrix_iblock_props();
@@ -62,8 +70,10 @@ function get_bitrix_remote_scheme($path)
 
 function compile_bitrix_diff($array1, $array2)
 {
+	$diff = bitrix_diff_arrays($array1, $array2);
+	
 	$result  = '<table>';
-	$result .= bitrix_diff_arrays($array1, $array2);
+	$result .= empty($diff) ? 'Same structure' : $diff;
 	$result .= '</table>';
 	
 	return $result;
