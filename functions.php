@@ -117,7 +117,7 @@ function bitrix_diff_arrays($array1, $array2, $prefix = '')
 		}
 		elseif ($array1[$k] !== $array2[$k])
 		{
-			$result .= bitrix_table_tr($prefix . $k . ' = ' . print_r($array1[$k], true), $prefix . $k . ' = ' . print_r($array2[$k], true));
+			$result .= bitrix_table_tr($prefix . $k . ' = ' . bitrix_print_prop($array1[$k]), $prefix . $k . ' = ' . bitrix_print_prop($array2[$k]));
 		}
 		else
 		{
@@ -126,4 +126,17 @@ function bitrix_diff_arrays($array1, $array2, $prefix = '')
 	}
 	
 	return $result;
+}
+
+function bitrix_print_prop($prop)
+{
+	$need_pre = is_array($prop) or is_object($prop);
+	
+	$prop = print_r($prop, true);
+	$prop = htmlspecialchars($prop);
+	
+	if ($need_pre)
+		$prop = "<pre>{$prop}</pre>";
+	
+	return $prop;
 }
