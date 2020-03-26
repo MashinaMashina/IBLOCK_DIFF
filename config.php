@@ -1,4 +1,4 @@
 <?php
 
 $bitrix1 = realpath(__DIR__ . '/..');
-$bitrix2 = 'http://ostrova.dev.picom.ru';
+$bitrix2 = 'http://bitrixdev.ru';
