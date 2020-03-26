@@ -13,4 +13,6 @@ $bitrix2 = 'http://bitrixdev.ru';
 4. Запускаем index.php
 5. Видим результат
 
-* если вы авторизованы на сайте, результаты могут быть разными
+# Установка
+1. В корне битрикса прописать git clone https://github.com/MashinaMashina/IBLOCK_DIFF
+2. Изменить второй проект в файле IBLOCK_DIFF/config.php
