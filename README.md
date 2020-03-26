@@ -7,7 +7,7 @@
 ```php
 $bitrix1 = realpath(__DIR__ . '/..');
 $bitrix2 = 'http://bitrixdev.ru';
-```php
+```
 
 3. Скрипт IBLOCK_DIFF так же должен быть на удаленном сайте
 4. Запускаем index.php
