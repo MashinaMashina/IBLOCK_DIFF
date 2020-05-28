@@ -16,7 +16,12 @@ function bitrix_admin_auth()
 
 function get_bitrix_local_scheme($path)
 {	
-	include_once $path . '/bitrix/modules/main/include/prolog_before.php';
+	global $DBType;
+	
+	if (empty($DBType))
+		$DBType = 'mysql';
+
+	require_once $path . '/bitrix/modules/main/include/prolog_before.php';
 	CModule::IncludeModule("iblock");
 	
 	bitrix_admin_auth();
